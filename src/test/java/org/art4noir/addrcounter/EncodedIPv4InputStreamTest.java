@@ -57,7 +57,7 @@ public class EncodedIPv4InputStreamTest {
 
     private int encodeOnce(String data) throws IOException {
         ByteArrayInputStream stream = new ByteArrayInputStream(data.getBytes(Charsets.UTF_8));
-        EncodedIPv4InputStream encoder = new EncodedIPv4InputStream(stream, '\n');
+        EncodedIPv4InputStream encoder = new EncodedIPv4InputStream(stream);
         return encoder.readEncodedIp();
     }
 
@@ -71,7 +71,7 @@ public class EncodedIPv4InputStreamTest {
                 "64.131.32.42"
         ).getBytes(Charsets.UTF_8);
         ByteArrayInputStream stream = new ByteArrayInputStream(data);
-        EncodedIPv4InputStream encoder = new EncodedIPv4InputStream(stream, '\n');
+        EncodedIPv4InputStream encoder = new EncodedIPv4InputStream(stream);
         Assert.assertEquals(ipAsInt(0, 1, 3, 42), encoder.readEncodedIp());
         Assert.assertEquals(ipAsInt(0, 1, 1, 2), encoder.readEncodedIp());
         Assert.assertEquals(ipAsInt(255, 1, 3, 42), encoder.readEncodedIp());

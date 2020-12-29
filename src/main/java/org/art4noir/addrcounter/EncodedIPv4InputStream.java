@@ -11,21 +11,20 @@ import java.io.InputStream;
  */
 public class EncodedIPv4InputStream extends InputStream {
     private static final char DOT = '.';
+    private static final char NEXT_LINE = '\n';
 
-    private final byte[] buffer = new byte[4096 * 1024];
+    private final byte[] buffer = new byte[32 * 1024];
     private int bufferPos;
     private int bufferFilled;
 
     private final InputStream stream;
-    private final char delim;
 
-    public EncodedIPv4InputStream(InputStream stream, char delim) {
+    public EncodedIPv4InputStream(InputStream stream) {
         this.stream = stream;
-        this.delim = delim;
     }
 
     public int readEncodedIp() throws IOException {
-        return (readIpPart(DOT) << 24) | (readIpPart(DOT) << 16) | (readIpPart(DOT) << 8) | (readIpPart(delim));
+        return (readIpPart(DOT) << 24) | (readIpPart(DOT) << 16) | (readIpPart(DOT) << 8) | (readIpPart(NEXT_LINE));
     }
 
     private int readIpPart(char delim) throws IOException {

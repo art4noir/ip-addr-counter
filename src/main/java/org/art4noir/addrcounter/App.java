@@ -13,7 +13,7 @@ public class App {
         if (args.length == 1) {
             File file = new File(args[0]);
             Preconditions.checkState(file.isFile() && file.exists(), "Given file isn't exist");
-            try (InputStream stream = new FileInputStream(file)) {
+            try (InputStream stream = new BufferedInputStream(new FileInputStream(file), 4 * 1024 * 1024)) {
                 countUniqueAddresses(stream);
             }
         } else {
@@ -22,7 +22,7 @@ public class App {
     }
 
     private static void countUniqueAddresses(InputStream stream) throws IOException {
-        EncodedIPv4InputStream ipStream = new EncodedIPv4InputStream(stream, '\n');
+        EncodedIPv4InputStream ipStream = new EncodedIPv4InputStream(stream);
         IPv4Counter iPv4Counter = new IPv4Counter();
         try {
             //noinspection InfiniteLoopStatement
