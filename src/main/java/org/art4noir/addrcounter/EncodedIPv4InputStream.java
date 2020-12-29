@@ -41,7 +41,7 @@ public class EncodedIPv4InputStream extends InputStream {
         int read2 = read();
         if ('0' <= read2 && read2 <= '9') {
             part = 10 * part + (read2 - '0');
-        } else if (read2 == -1 || read2 == delim) {
+        } else if (read2 == delim || read2 == -1) {
             return part;
         } else {
             throw new IllegalArgumentException();
@@ -50,17 +50,14 @@ public class EncodedIPv4InputStream extends InputStream {
         int read3 = read();
         if ('0' <= read3 && read3 <= '9') {
             part = 10 * part + (read3 - '0');
-        } else if (read3 == -1 || read3 == delim) {
+        } else if (read3 == delim || read3 == -1) {
             return part;
         } else {
             throw new IllegalArgumentException();
         }
 
         int read4 = read();
-        if (read4 == -1 || read4 == delim) {
-            if (part > 255) {
-                throw new IllegalArgumentException();
-            }
+        if ((read4 == delim || read4 == -1) && part < 256) {
             return part;
         } else {
             throw new IllegalArgumentException();
@@ -69,11 +66,11 @@ public class EncodedIPv4InputStream extends InputStream {
 
     @Override
     public int read() throws IOException {
-        if (bufferFilled == -1) {
-            return -1;
-        }
         if (bufferPos < bufferFilled) {
             return buffer[bufferPos++];
+        }
+        if (bufferFilled == -1) {
+            return -1;
         }
         bufferFilled = stream.read(buffer);
         if (bufferFilled == -1) {
