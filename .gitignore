@@ -1,0 +1,5 @@
+.gradle/**
+.idea/**
+build/**
+ip_addresses.gz
+garbage-collection.log
