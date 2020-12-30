@@ -15,9 +15,14 @@ public class EncodedIPv4InputStreamTest {
         Assert.assertEquals(0, encodeOnce(""));
     }
 
-    @Test(expected = EOFException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testIncomplete() throws IOException {
         Assert.assertEquals(0, encodeOnce("0.0.0"));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testIncomplete2() throws IOException {
+        Assert.assertEquals(0, encodeOnce("0.0."));
     }
 
     @Test(expected = IllegalArgumentException.class)

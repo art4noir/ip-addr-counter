@@ -31,16 +31,17 @@ public class EncodedIPv4InputStream extends InputStream {
      * @throws IOException  if any IO problems happened
      */
     public int readEncodedIp() throws IOException {
-        return (readIpPart(DOT) << 24) | (readIpPart(DOT) << 16) | (readIpPart(DOT) << 8) | (readIpPart(NEXT_LINE));
+        int read1 = read();
+        if (read1 == -1) {
+            throw new EOFException();
+        }
+        return (readIpPart(DOT, read1) << 24) | (readIpPart(DOT, read()) << 16) | (readIpPart(DOT, read()) << 8) | (readIpPart(NEXT_LINE, read()));
     }
 
-    private int readIpPart(char delim) throws IOException {
-        int read1 = read();
+    private int readIpPart(char delim, int read1) throws IOException {
         int part;
         if ('0' <= read1 && read1 <= '9') {
             part = read1 - '0';
-        } else if (read1 == -1) {
-            throw new EOFException();
         } else {
             throw new IllegalArgumentException();
         }
