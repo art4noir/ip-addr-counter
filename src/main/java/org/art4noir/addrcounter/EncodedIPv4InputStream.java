@@ -23,6 +23,13 @@ public class EncodedIPv4InputStream extends InputStream {
         this.stream = stream;
     }
 
+    /**
+     * Reads text representation of ipv4 address as 4 consequent bytes packed as int.
+     *
+     * @return int representation of ipv4 address
+     * @throws EOFException if no full record could be obtained from stream
+     * @throws IOException  if any IO problems happened
+     */
     public int readEncodedIp() throws IOException {
         return (readIpPart(DOT) << 24) | (readIpPart(DOT) << 16) | (readIpPart(DOT) << 8) | (readIpPart(NEXT_LINE));
     }

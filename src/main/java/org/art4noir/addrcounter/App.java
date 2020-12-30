@@ -13,7 +13,7 @@ public class App {
         if (args.length == 1) {
             File file = new File(args[0]);
             Preconditions.checkState(file.isFile() && file.exists(), "Given file isn't exist");
-            try (InputStream stream = new BufferedInputStream(new FileInputStream(file), 4 * 1024 * 1024)) {
+            try (InputStream stream = new FileInputStream(file)) {
                 countUniqueAddresses(stream);
             }
         } else {
